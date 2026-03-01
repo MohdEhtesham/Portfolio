@@ -6,6 +6,7 @@ import InterfaceFrame from './components/InterfaceFrame';
 import SideIndicator from './components/SideIndicator';
 import StatusStrip from './components/StatusStrip';
 import NetworkBackground from './components/NetworkBackground';
+import ErrorBoundary from './components/ErrorBoundary';
 
 /* Pages */
 import HomePage from './pages/HomePage';
@@ -150,8 +151,10 @@ export default function App() {
   if (booting) return <BootSequence onComplete={() => setBooting(false)} />;
 
   return (
-    <BrowserRouter basename="/Portfolio/">
-      <AppShell />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter basename="/Portfolio/">
+        <AppShell />
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
