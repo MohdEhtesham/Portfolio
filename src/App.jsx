@@ -154,32 +154,51 @@ function AppShell() {
 }
 
 /* ========================================
-   ROOT
+   SIMPLIFIED APP — TESTING VERSION
    ======================================== */
 export default function App() {
   const [booting, setBooting] = useState(true);
-  const [debugInfo, setDebugInfo] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log('App mounted');
-    setDebugInfo('App: Mounted successfully');
-    
-    const bootTimer = setTimeout(() => {
-      console.log('Boot sequence complete, loading main app');
-      setBooting(false);
-      setDebugInfo('App: Boot complete');
-    }, 1800);
-
-    return () => clearTimeout(bootTimer);
+    try {
+      console.log('✅ App initialized');
+      setTimeout(() => {
+        console.log('✅ Boot sequence complete');
+        setBooting(false);
+      }, 1800);
+    } catch (err) {
+      console.error('❌ Error:', err);
+      setError(err.message);
+    }
   }, []);
 
+  if (error) {
+    return (
+      <div style={{
+        width: '100%',
+        height: '100vh',
+        background: '#060D09',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#FF6B6B',
+        fontFamily: 'monospace',
+        fontSize: '14px',
+        padding: '40px'
+      }}>
+        <div>
+          <h1>ERROR</h1>
+          <pre>{error}</pre>
+        </div>
+      </div>
+    );
+  }
+
   if (booting) {
-    console.log('Showing boot sequence');
     return <BootSequence onComplete={() => setBooting(false)} />;
   }
 
-  console.log('Rendering main app');
-  
   return (
     <ErrorBoundary>
       <BrowserRouter basename="/Portfolio/">
@@ -189,14 +208,16 @@ export default function App() {
         position: 'fixed',
         bottom: '10px',
         right: '10px',
-        fontSize: '10px',
+        fontSize: '12px',
         color: '#22C55E',
-        background: 'rgba(0,0,0,0.8)',
-        padding: '5px 10px',
+        background: 'rgba(0,0,0,0.9)',
+        padding: '10px 15px',
         fontFamily: 'monospace',
-        zIndex: 99999
+        zIndex: 99999,
+        borderRadius: '4px',
+        border: '1px solid rgba(34,197,94,0.3)'
       }}>
-        {debugInfo}
+        ✅ App loaded
       </div>
     </ErrorBoundary>
   );
