@@ -43,7 +43,7 @@ export default function ContactPage() {
                         <div className="panel-body space-y-3">
                             {[
                                 { label: 'EMAIL', href: `mailto:${personalInfo.email}`, val: personalInfo.email },
-                                { label: 'GITHUB', href: personalInfo.github, val: 'github.com/ehtesham' },
+                                { label: 'GITHUB', href: personalInfo.github, val: 'github.com/MohdEhtesham' },
                                 { label: 'LINKEDIN', href: personalInfo.linkedin, val: 'linkedin.com/in/ehtesham' },
                             ].map(c => (
                                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer"
