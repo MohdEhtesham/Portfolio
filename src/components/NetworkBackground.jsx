@@ -64,9 +64,13 @@ function NetworkLines() {
 export default function NetworkBackground() {
     return (
         <div className="fixed inset-0 z-0" style={{ pointerEvents: 'none' }}>
-            <Canvas camera={{ position: [0, 0, 10], fov: 55 }}
-                dpr={[1, 1.5]} gl={{ antialias: false, alpha: true }}
-                style={{ background: 'transparent' }}>
+            <Canvas 
+                camera={{ position: [0, 0, 10], fov: 55 }}
+                dpr={[1, 1.5]} 
+                gl={{ antialias: false, alpha: true, failIfMajorPerformanceWarning: false }}
+                style={{ background: 'transparent' }}
+                onError={(error) => console.error('Canvas error:', error)}
+            >
                 <CircuitParticles count={180} />
                 <NetworkLines />
             </Canvas>
