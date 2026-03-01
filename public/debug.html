@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug</title>
+</head>
+<body style="background: #060D09; color: #22C55E; font-family: monospace; padding: 20px;">
+    <h1>Portfolio Debug Check</h1>
+    <p>Current URL: <span id="url"></span></p>
+    <p>Base Path: <span id="base"></span></p>
+    
+    <h2>Resource Loading Tests:</h2>
+    <div id="tests"></div>
+    
+    <script>
+        const baseUrl = window.location.pathname;
+        document.getElementById('url').textContent = window.location.href;
+        document.getElementById('base').textContent = baseUrl;
+        
+        const tests = [
+            { name: '/Portfolio/assets/index-CLHt5_vc.css', path: '/Portfolio/assets/index-CLHt5_vc.css' },
+            { name: '/Portfolio/assets/index-jwWgkza4.js', path: '/Portfolio/assets/index-jwWgkza4.js' },
+            { name: './assets/index-CLHt5_vc.css', path: './assets/index-CLHt5_vc.css' },
+            { name: 'assets/index-CLHt5_vc.css', path: 'assets/index-CLHt5_vc.css' },
+        ];
+        
+        const container = document.getElementById('tests');
+        
+        tests.forEach(test => {
+            const item = document.createElement('div');
+            item.style.margin = '10px 0';
+            item.innerHTML = `Testing: <code>${test.name}</code>... `;
+            
+            fetch(test.path)
+                .then(r => {
+                    if (r.ok) {
+                        item.innerHTML += '<span style="color: #22C55E;">✅ OK</span>';
+                    } else {
+                        item.innerHTML += `<span style="color: #FF6B6B;">❌ Status ${r.status}</span>`;
+                    }
+                })
+                .catch(e => {
+                    item.innerHTML += `<span style="color: #FF6B6B;">❌ ${e.message}</span>`;
+                });
+            
+            container.appendChild(item);
+        });
+    </script>
+</body>
+</html>
