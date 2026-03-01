@@ -12,6 +12,28 @@ export default class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
+
+    // #region agent log
+    fetch('http://127.0.0.1:7719/ingest/b7b45269-dba7-47c4-826d-3840bf0e348e', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Debug-Session-Id': 'c93068',
+      },
+      body: JSON.stringify({
+        sessionId: 'c93068',
+        runId: 'initial',
+        hypothesisId: 'H3',
+        location: 'src/components/ErrorBoundary.jsx:18',
+        message: 'ErrorBoundary caught error',
+        data: {
+          message: error?.message,
+          name: error?.name,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
   }
 
   render() {

@@ -161,11 +161,51 @@ export default function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7719/ingest/b7b45269-dba7-47c4-826d-3840bf0e348e', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Debug-Session-Id': 'c93068',
+      },
+      body: JSON.stringify({
+        sessionId: 'c93068',
+        runId: 'initial',
+        hypothesisId: 'H2',
+        location: 'src/App.jsx:163',
+        message: 'App useEffect start',
+        data: {
+          initialBooting: true,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+
     try {
       console.log('✅ App initialized');
       setTimeout(() => {
         console.log('✅ Boot sequence complete');
         setBooting(false);
+
+        // #region agent log
+        fetch('http://127.0.0.1:7719/ingest/b7b45269-dba7-47c4-826d-3840bf0e348e', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Debug-Session-Id': 'c93068',
+          },
+          body: JSON.stringify({
+            sessionId: 'c93068',
+            runId: 'initial',
+            hypothesisId: 'H2',
+            location: 'src/App.jsx:171',
+            message: 'Boot sequence complete, booting=false',
+            data: {},
+            timestamp: Date.now(),
+          }),
+        }).catch(() => {});
+        // #endregion
       }, 1800);
     } catch (err) {
       console.error('❌ Error:', err);
