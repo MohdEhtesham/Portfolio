@@ -1,48 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Debug</title>
+    <title>GitHub Pages Asset Debug</title>
+    <style>
+        body {
+            background: #060D09;
+            color: #22C55E;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1, h2 { color: #86EFAC; }
+        .test { margin: 15px 0; padding: 10px; border: 1px solid #22C55E; border-radius: 4px; }
+        .success { background: rgba(34, 197, 94, 0.1); color: #86EFAC; }
+        .error { background: rgba(255, 107, 107, 0.1); color: #FF9999; }
+        .pending { background: rgba(79, 172, 254, 0.1); color: #4FACFE; }
+        code { background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 3px; }
+    </style>
 </head>
-<body style="background: #060D09; color: #22C55E; font-family: monospace; padding: 20px;">
-    <h1>Portfolio Debug Check</h1>
-    <p>Current URL: <span id="url"></span></p>
-    <p>Base Path: <span id="base"></span></p>
+<body>
+    <h1>📊 GitHub Pages Diagnostic</h1>
     
-    <h2>Resource Loading Tests:</h2>
-    <div id="tests"></div>
-    
+    <div class="test">
+        <strong>Your URL:</strong> <code id="url"></code>
+    </div>
+
+    <h2>🔍 Asset Loading Tests</h2>
+    <div id="results"></div>
+
+    <h2>💡 Next Steps</h2>
+    <ol>
+        <li>Open DevTools (F12) → Network tab</li>
+        <li>Refresh this page</li>
+        <li>Look for any RED items (404 errors)</li>
+        <li>Copy the exact URL of the failed resource</li>
+        <li>Report the URL to fix the issue</li>
+    </ol>
+
     <script>
-        const baseUrl = window.location.pathname;
         document.getElementById('url').textContent = window.location.href;
-        document.getElementById('base').textContent = baseUrl;
         
-        const tests = [
-            { name: '/Portfolio/assets/index-CLHt5_vc.css', path: '/Portfolio/assets/index-CLHt5_vc.css' },
-            { name: '/Portfolio/assets/index-jwWgkza4.js', path: '/Portfolio/assets/index-jwWgkza4.js' },
-            { name: './assets/index-CLHt5_vc.css', path: './assets/index-CLHt5_vc.css' },
-            { name: 'assets/index-CLHt5_vc.css', path: 'assets/index-CLHt5_vc.css' },
+        const assetTests = [
+            { name: 'JS file (absolute path)', url: '/Portfolio/assets/index-g2KgQ2cS.js' },
+            { name: 'CSS file (absolute path)', url: '/Portfolio/assets/index-BayQ0py1.css' },
+            { name: 'JS file (relative path)', url: './assets/index-g2KgQ2cS.js' },
+            { name: 'CSS file (relative path)', url: './assets/index-BayQ0py1.css' },  
+            { name: 'Main index.html', url: '/Portfolio/index.html' },
+            { name: 'This debug.html', url: '/Portfolio/debug.html' },
         ];
-        
-        const container = document.getElementById('tests');
-        
-        tests.forEach(test => {
+
+        const resultsContainer = document.getElementById('results');
+
+        assetTests.forEach((test, idx) => {
             const item = document.createElement('div');
-            item.style.margin = '10px 0';
-            item.innerHTML = `Testing: <code>${test.name}</code>... `;
-            
-            fetch(test.path)
-                .then(r => {
-                    if (r.ok) {
-                        item.innerHTML += '<span style="color: #22C55E;">✅ OK</span>';
+            item.className = 'test pending';
+            item.innerHTML = `<strong>${idx + 1}.</strong> ${test.name}<br><code>${test.url}</code><br><span id="result-${idx}">Testing...</span>`;
+            resultsContainer.appendChild(item);
+
+            fetch(test.url, { method: 'HEAD' })
+                .then(response => {
+                    const resultEl = document.getElementById(`result-${idx}`);
+                    if (response.ok) {
+                        item.classList.remove('pending');
+                        item.classList.add('success');
+                        resultEl.textContent = `✅ Success (${response.status})`;
                     } else {
-                        item.innerHTML += `<span style="color: #FF6B6B;">❌ Status ${r.status}</span>`;
+                        item.classList.remove('pending');
+                        item.classList.add('error');
+                        resultEl.textContent = `❌ Error ${response.status}`;
                     }
                 })
-                .catch(e => {
-                    item.innerHTML += `<span style="color: #FF6B6B;">❌ ${e.message}</span>`;
+                .catch(err => {
+                    const resultEl = document.getElementById(`result-${idx}`);
+                    item.classList.remove('pending');
+                    item.classList.add('error');
+                    resultEl.textContent = `❌ ${err.message}`;
                 });
-            
-            container.appendChild(item);
         });
     </script>
 </body>
