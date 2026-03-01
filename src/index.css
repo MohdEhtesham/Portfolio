@@ -1,0 +1,581 @@
+@import "tailwindcss";
+
+/* ========================================
+   ENGINEERING SYSTEM INTERFACE — DESIGN TOKENS
+   ======================================== */
+
+@theme {
+  --color-bg-void: #060D09;
+  --color-bg-panel: rgba(12, 22, 16, 0.75);
+  --color-bg-panel-solid: #0C1610;
+  --color-bg-module: rgba(18, 32, 24, 0.60);
+
+  --color-green-primary: #22C55E;
+  --color-green-deep: #16A34A;
+  --color-green-mint: #86EFAC;
+  --color-green-soft: #4ADE80;
+  --color-green-dim: rgba(34, 197, 94, 0.12);
+
+  --color-text-primary: #E6F4EA;
+  --color-text-secondary: #8FB89E;
+  --color-text-muted: #4A6B55;
+  --color-text-dim: #2D4636;
+
+  --color-border: rgba(34, 197, 94, 0.12);
+  --color-border-active: rgba(34, 197, 94, 0.30);
+  --color-glow: rgba(34, 197, 94, 0.35);
+
+  --font-system: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+/* ========================================
+   RESET & BASE
+   ======================================== */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.22) transparent;
+}
+
+body,
+#root {
+  min-height: 100vh;
+  background: var(--color-bg-void);
+  color: var(--color-text-primary);
+  font-family: var(--font-system);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(34, 197, 94, 0.25);
+  color: #E6F4EA;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.22);
+  border-radius: 2px;
+}
+
+/* ========================================
+   GLOBAL LAYOUT
+   ======================================== */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+}
+
+.page-content {
+  flex: 1;
+  padding: 24px 32px 32px;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding: 16px 14px 24px;
+  }
+}
+
+/* ========================================
+   PANEL STYLES
+   ======================================== */
+
+.panel {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.18), transparent);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  user-select: none;
+}
+
+.panel-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--color-green-primary);
+}
+
+.panel-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--color-text-muted);
+}
+
+.panel-status .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-green-primary);
+  box-shadow: 0 0 6px var(--color-glow);
+  animation: dot-pulse 2.5s ease-in-out infinite;
+}
+
+.panel-body {
+  padding: 16px;
+}
+
+/* ========================================
+   TOPBAR
+   ======================================== */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 52px;
+  background: var(--color-bg-panel);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ========================================
+   SIDE MODULE INDICATOR
+   ======================================== */
+
+.side-indicator {
+  width: 52px;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-bg-panel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 4px;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px - 36px);
+}
+
+@media (max-width: 768px) {
+  .side-indicator {
+    display: none;
+  }
+}
+
+/* ========================================
+   STATUS STRIP (FOOTER)
+   ======================================== */
+
+.status-strip {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: var(--color-bg-panel);
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--color-text-dim);
+}
+
+/* ========================================
+   MODULE TILES
+   ======================================== */
+
+.module-tile {
+  background: var(--color-bg-module);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.module-tile:hover {
+  border-color: var(--color-border-active);
+  background: rgba(34, 197, 94, 0.04);
+  box-shadow: 0 0 24px rgba(34, 197, 94, 0.06);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   PROJECT NODE
+   ======================================== */
+
+.project-node {
+  background: var(--color-bg-module);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.project-node:hover {
+  border-color: var(--color-border-active);
+  box-shadow: 0 0 28px rgba(34, 197, 94, 0.08);
+  transform: translateY(-3px) scale(1.01);
+}
+
+.project-node .node-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-green-primary);
+  box-shadow: 0 0 8px var(--color-glow);
+}
+
+/* ========================================
+   TERMINAL INPUT
+   ======================================== */
+
+.terminal-input {
+  width: 100%;
+  background: rgba(34, 197, 94, 0.03);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: all 0.3s;
+}
+
+.terminal-input:focus {
+  border-color: var(--color-border-active);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.06);
+}
+
+.terminal-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+/* ========================================
+   GRADIENT TEXT
+   ======================================== */
+
+.gradient-text {
+  background: linear-gradient(135deg, #22C55E, #86EFAC, #4ADE80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   CIRCUIT BACKGROUND
+   ======================================== */
+
+.circuit-bg {
+  background-image:
+    radial-gradient(rgba(34, 197, 94, 0.025) 1px, transparent 1px),
+    linear-gradient(rgba(34, 197, 94, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px, 40px 40px, 40px 40px;
+}
+
+/* ========================================
+   OVERLAY
+   ======================================== */
+
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 13, 9, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-panel {
+  background: var(--color-bg-panel-solid);
+  border: 1px solid var(--color-border-active);
+  border-radius: 12px;
+  max-width: 680px;
+  width: 92vw;
+  max-height: 82vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.overlay-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-green-primary), transparent);
+}
+
+/* ========================================
+   ARCHITECTURE GRAPH NODE
+   ======================================== */
+
+.arch-node {
+  background: var(--color-bg-module);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.arch-node:hover {
+  border-color: var(--color-border-active);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.08);
+  transform: scale(1.03);
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes dot-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 6px var(--color-glow);
+  }
+
+  50% {
+    opacity: 0.4;
+    box-shadow: 0 0 2px var(--color-glow);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    top: -2px;
+  }
+
+  100% {
+    top: 100vh;
+  }
+}
+
+@keyframes boot-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes typing-cursor {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-boot {
+  animation: boot-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.boot-1 {
+  animation-delay: 0.05s;
+}
+
+.boot-2 {
+  animation-delay: 0.12s;
+}
+
+.boot-3 {
+  animation-delay: 0.20s;
+}
+
+.boot-4 {
+  animation-delay: 0.28s;
+}
+
+.boot-5 {
+  animation-delay: 0.36s;
+}
+
+.boot-6 {
+  animation-delay: 0.44s;
+}
+
+.boot-7 {
+  animation-delay: 0.52s;
+}
+
+.boot-8 {
+  animation-delay: 0.60s;
+}
+
+.fade-up {
+  animation: fade-in-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.slide-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+/* ========================================
+   PAGE SECTION HEADERS
+   ======================================== */
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-header .page-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-green-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.page-header .page-label .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.18), transparent);
+}
+
+.page-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  max-width: 520px;
+  line-height: 1.65;
+}
+
+/* ========================================
+   SCROLLBAR OVERRIDES
+   ======================================== */
+
+.panel-body::-webkit-scrollbar {
+  width: 2px;
+}
+
+.panel-body::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.15);
+  border-radius: 1px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0 12px;
+    height: 48px;
+  }
+
+  .status-strip {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 8px;
+  }
+}
