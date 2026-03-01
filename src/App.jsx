@@ -150,7 +150,7 @@ export default function App() {
   if (booting) return <BootSequence onComplete={() => setBooting(false)} />;
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Portfolio/">
       <AppShell />
     </BrowserRouter>
   );
