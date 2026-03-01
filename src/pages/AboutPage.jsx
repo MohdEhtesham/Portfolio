@@ -1,7 +1,10 @@
 import { personalInfo, education } from '../data/portfolioData';
+import { getExperienceYearsLabel } from '../utils/experience';
+
+const experienceYears = getExperienceYearsLabel();
 
 const highlights = [
-    { icon: '📱', val: '3.5+ Years', sub: 'Mobile Engineering', text: 'End-to-end React Native lifecycle ownership' },
+    { icon: '📱', val: `${experienceYears} Years`, sub: 'Mobile Engineering', text: 'End-to-end React Native lifecycle ownership' },
     { icon: '🚀', val: '8+ Apps', sub: 'Deployed Systems', text: 'Shipped across EdTech, Healthcare, Travel, AI' },
     { icon: '👥', val: '2M+ Users', sub: 'Scale Impact', text: 'Production apps serving millions daily' },
     { icon: '⚡', val: '40% Faster', sub: 'Performance Gains', text: 'Bundle & runtime optimization mastery' },
@@ -93,7 +96,7 @@ export default function AboutPage() {
             </div>
 
             {/* Highlight cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mt-8">
                 {highlights.map((h, i) => (
                     <div key={h.val} className={`module-tile animate-boot boot-${i + 4}`}>
                         <span className="text-xl mb-2 block">{h.icon}</span>

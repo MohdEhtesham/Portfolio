@@ -2,6 +2,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { personalInfo, techStackIcons } from '../data/portfolioData';
 import Hero3D from '../components/Hero3D';
+import { getExperienceYearsLabel } from '../utils/experience';
 
 /* ---------- Typewriter ---------- */
 function TypeWriter({ texts, speed = 62, deleteSpeed = 32, pause = 2200 }) {
@@ -60,6 +61,8 @@ function FloatingTechBadge({ icon, name, color, index }) {
 }
 
 export default function HeroSection() {
+    const experienceYears = getExperienceYearsLabel();
+
     const taglines = [
         'Building Scalable Mobile Experiences',
         'React Native Architecture Expert',
@@ -68,7 +71,10 @@ export default function HeroSection() {
     ];
 
     return (
-        <section id="hero" className="relative min-h-screen flex items-center overflow-hidden holo-grid">
+        <section
+            id="hero"
+            className="relative min-h-screen flex items-center overflow-hidden holo-grid py-16 sm:py-20 lg:py-24"
+        >
             {/* Radial ambient glow */}
             <div className="absolute inset-0 pointer-events-none">
                 <div
@@ -81,8 +87,8 @@ export default function HeroSection() {
                 />
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-screen pt-24 lg:pt-0">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[calc(100vh-10rem)] lg:min-h-[60vh] pt-10 lg:pt-0">
 
                     {/* ── Left column ── */}
                     <div className="order-2 lg:order-1">
@@ -166,7 +172,7 @@ export default function HeroSection() {
                             className="flex gap-10 mt-12"
                         >
                             {[
-                                { value: '3.5+', label: 'Years Exp.' },
+                                { value: experienceYears, label: 'Years Exp.' },
                                 { value: '8+', label: 'Projects' },
                                 { value: '2M+', label: 'Users' },
                             ].map((s) => (

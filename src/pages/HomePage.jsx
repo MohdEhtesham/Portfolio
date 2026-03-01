@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import SystemCore from '../components/SystemCore';
 import { personalInfo } from '../data/portfolioData';
+import { getExperienceYearsLabel } from '../utils/experience';
 
 const quickModules = [
     { path: '/about', icon: '◉', label: 'IDENTITY', desc: 'Profile & philosophy' },
@@ -13,9 +14,10 @@ const quickModules = [
 ];
 
 export default function HomePage() {
+    const experienceYears = getExperienceYearsLabel();
     return (
         <div className="fade-up">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[calc(100vh-140px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-140px)]">
 
                 {/* Left — Core identity */}
                 <div>
@@ -56,9 +58,9 @@ export default function HomePage() {
                     </div>
 
                     {/* Stats */}
-                    <div className="flex gap-10 mt-8 animate-boot boot-6">
+                    <div className="flex gap-10 md:gap-14 mt-8 animate-boot boot-6">
                         {[
-                            { val: '3.5+', label: 'Years' },
+                            { val: experienceYears, label: 'Years' },
                             { val: '8+', label: 'Projects' },
                             { val: '2M+', label: 'Users' },
                         ].map(s => (
