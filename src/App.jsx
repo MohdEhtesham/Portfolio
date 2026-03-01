@@ -103,10 +103,12 @@ function ScrollToTop() {
    APP SHELL — LAYOUT WITH ROUTER
    ======================================== */
 function AppShell() {
+  console.log('AppShell mounted');
+  
   return (
-    <div className="app-shell circuit-bg">
+    <div className="app-shell circuit-bg" style={{ background: '#060D09', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {/* Background */}
-      <Suspense fallback={null}>
+      <Suspense fallback={<div>Loading background...</div>}>
         <NetworkBackground />
       </Suspense>
 
@@ -117,27 +119,36 @@ function AppShell() {
       </div>
 
       {/* Top bar */}
-      <InterfaceFrame />
+      <Suspense fallback={<div>Loading navbar...</div>}>
+        <InterfaceFrame />
+      </Suspense>
 
       {/* Main area */}
-      <div className="app-main">
-        <SideIndicator />
-        <div className="page-content">
+      <div className="app-main" style={{ flex: 1, display: 'flex' }}>
+        <Suspense fallback={<div>Loading sidebar...</div>}>
+          <SideIndicator />
+        </Suspense>
+        
+        <div className="page-content" style={{ flex: 1, padding: '24px 32px 32px', position: 'relative', zIndex: 10 }}>
           <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/skills" element={<SkillsPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="/architecture" element={<ArchitecturePage />} />
-            <Route path="/contact" element={<ContactPage />} />
-          </Routes>
+          <Suspense fallback={<div style={{ color: '#22C55E' }}>Loading page...</div>}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/skills" element={<SkillsPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/architecture" element={<ArchitecturePage />} />
+              <Route path="/contact" element={<ContactPage />} />
+            </Routes>
+          </Suspense>
         </div>
       </div>
 
       {/* Status footer */}
-      <StatusStrip />
+      <Suspense fallback={<div>Loading footer...</div>}>
+        <StatusStrip />
+      </Suspense>
     </div>
   );
 }
@@ -147,14 +158,46 @@ function AppShell() {
    ======================================== */
 export default function App() {
   const [booting, setBooting] = useState(true);
+  const [debugInfo, setDebugInfo] = useState('');
 
-  if (booting) return <BootSequence onComplete={() => setBooting(false)} />;
+  useEffect(() => {
+    console.log('App mounted');
+    setDebugInfo('App: Mounted successfully');
+    
+    const bootTimer = setTimeout(() => {
+      console.log('Boot sequence complete, loading main app');
+      setBooting(false);
+      setDebugInfo('App: Boot complete');
+    }, 1800);
 
+    return () => clearTimeout(bootTimer);
+  }, []);
+
+  if (booting) {
+    console.log('Showing boot sequence');
+    return <BootSequence onComplete={() => setBooting(false)} />;
+  }
+
+  console.log('Rendering main app');
+  
   return (
     <ErrorBoundary>
       <BrowserRouter basename="/Portfolio/">
         <AppShell />
       </BrowserRouter>
+      <div style={{
+        position: 'fixed',
+        bottom: '10px',
+        right: '10px',
+        fontSize: '10px',
+        color: '#22C55E',
+        background: 'rgba(0,0,0,0.8)',
+        padding: '5px 10px',
+        fontFamily: 'monospace',
+        zIndex: 99999
+      }}>
+        {debugInfo}
+      </div>
     </ErrorBoundary>
   );
 }
