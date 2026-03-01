@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -61,19 +61,29 @@ function NetworkLines() {
     );
 }
 
+function CanvasContent() {
+    return (
+        <>
+            <CircuitParticles count={180} />
+            <NetworkLines />
+        </>
+    );
+}
+
 export default function NetworkBackground() {
     return (
         <div className="fixed inset-0 z-0" style={{ pointerEvents: 'none' }}>
-            <Canvas 
-                camera={{ position: [0, 0, 10], fov: 55 }}
-                dpr={[1, 1.5]} 
-                gl={{ antialias: false, alpha: true, failIfMajorPerformanceWarning: false }}
-                style={{ background: 'transparent' }}
-                onError={(error) => console.error('Canvas error:', error)}
-            >
-                <CircuitParticles count={180} />
-                <NetworkLines />
-            </Canvas>
+            <Suspense fallback={<div style={{ width: '100%', height: '100%', background: 'transparent' }} />}>
+                <Canvas 
+                    camera={{ position: [0, 0, 10], fov: 55 }}
+                    dpr={[1, 1.5]} 
+                    gl={{ antialias: false, alpha: true, failIfMajorPerformanceWarning: false }}
+                    style={{ background: 'transparent' }}
+                    onError={(error) => console.error('Canvas error:', error)}
+                >
+                    <CanvasContent />
+                </Canvas>
+            </Suspense>
         </div>
     );
 }
