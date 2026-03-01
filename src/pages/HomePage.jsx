@@ -15,6 +15,7 @@ const quickModules = [
 
 export default function HomePage() {
     const experienceYears = getExperienceYearsLabel();
+    const summary = personalInfo.summary.replace('{EXP_YEARS}', experienceYears);
     return (
         <div className="fade-up">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-140px)]">
@@ -37,7 +38,7 @@ export default function HomePage() {
                     </p>
 
                     <p className="text-sm leading-relaxed mb-8 max-w-lg animate-boot boot-4" style={{ color: '#8FB89E' }}>
-                        {personalInfo.summary.slice(0, 200)}…
+                        {summary.slice(0, 200)}…
                     </p>
 
                     {/* Quick access modules */}

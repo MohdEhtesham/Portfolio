@@ -62,6 +62,7 @@ function FloatingTechBadge({ icon, name, color, index }) {
 
 export default function HeroSection() {
     const experienceYears = getExperienceYearsLabel();
+    const summary = personalInfo.summary.replace('{EXP_YEARS}', experienceYears);
 
     const taglines = [
         'Building Scalable Mobile Experiences',
@@ -150,7 +151,7 @@ export default function HeroSection() {
                             className="leading-relaxed mb-10 max-w-lg"
                             style={{ color: '#A7D7B8' }}
                         >
-                            {personalInfo.summary.slice(0, 155)}…
+                            {summary.slice(0, 155)}…
                         </motion.p>
 
                         {/* CTAs */}

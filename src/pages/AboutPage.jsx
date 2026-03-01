@@ -11,6 +11,8 @@ const highlights = [
 ];
 
 export default function AboutPage() {
+    const summary = personalInfo.summary.replace('{EXP_YEARS}', experienceYears);
+
     return (
         <div className="fade-up">
             <div className="page-header">
@@ -26,16 +28,16 @@ export default function AboutPage() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 xl:gap-10">
                 {/* Main summary panel */}
-                <div className="lg:col-span-2 panel animate-boot boot-3">
+                <div className="lg:col-span-8 panel animate-boot boot-3">
                     <div className="panel-header">
                         <span className="panel-title">Profile Data</span>
                         <div className="panel-status"><span className="dot" /><span>LOADED</span></div>
                     </div>
                     <div className="panel-body space-y-4 md:space-y-5">
                         <p className="text-sm leading-relaxed" style={{ color: '#8FB89E' }}>
-                            {personalInfo.summary}
+                            {summary}
                         </p>
                         <p className="text-sm leading-relaxed" style={{ color: '#8FB89E' }}>
                             With deep expertise in React Native, JavaScript ES6+, Redux, Firebase, and a wide array
@@ -57,7 +59,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Side data panel */}
-                <div className="space-y-4 md:space-y-5 animate-boot boot-4">
+                <div className="lg:col-span-4 space-y-4 md:space-y-5 lg:space-y-6 animate-boot boot-4">
                     <div className="panel">
                         <div className="panel-header">
                             <span className="panel-title">Location</span>
@@ -96,7 +98,7 @@ export default function AboutPage() {
             </div>
 
             {/* Highlight cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mt-8 sm:mt-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mt-10 sm:mt-12">
                 {highlights.map((h, i) => (
                     <div key={h.val} className={`module-tile animate-boot boot-${i + 4}`}>
                         <span className="text-xl mb-2 block">{h.icon}</span>

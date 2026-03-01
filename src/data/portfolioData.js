@@ -7,7 +7,7 @@ export const personalInfo = {
     role: "React Native Developer",
     tagline: "Mobile Application Engineer",
     summary:
-        "React Native developer with 3.5+ years of expertise in architecting and delivering high-performance mobile applications. Strong ownership of end-to-end mobile lifecycle — from architecture design, third-party integrations, and performance optimization to deployment and scalable mobile systems.",
+        "React Native developer with {EXP_YEARS} years of expertise in architecting and delivering high-performance mobile applications. Strong ownership of end-to-end mobile lifecycle — from architecture design, third-party integrations, and performance optimization to deployment and scalable mobile systems.",
     location: "Noida, India",
     email: "ehtesham.dev@gmail.com",
     github: "https://github.com/MohdEhtesham",
