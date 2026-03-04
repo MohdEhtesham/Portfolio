@@ -9,9 +9,9 @@ export const personalInfo = {
     summary:
         "React Native developer with {EXP_YEARS} years of expertise in architecting and delivering high-performance mobile applications. Strong ownership of end-to-end mobile lifecycle — from architecture design, third-party integrations, and performance optimization to deployment and scalable mobile systems.",
     location: "Noida, India",
-    email: "ehtesham.dev@gmail.com",
+    email: "ehteshamidrishi@gmail.com",
     github: "https://github.com/MohdEhtesham",
-    linkedin: "https://linkedin.com/in/ehtesham",
+    linkedin: "https://www.linkedin.com/in/mohd-ehtesham-11482021b/",
     resumeUrl: "#",
 };
 
