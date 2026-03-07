@@ -44,7 +44,7 @@ export default function ContactPage() {
                             {[
                                 { label: 'EMAIL', href: `mailto:${personalInfo.email}`, val: personalInfo.email },
                                 { label: 'GITHUB', href: personalInfo.github, val: 'github.com/MohdEhtesham' },
-                                { label: 'LINKEDIN', href: personalInfo.linkedin, val: 'linkedin.com/in/ehtesham' },
+                                { label: 'LINKEDIN', href: personalInfo.linkedin, val: 'linkedin.com/in/mohd-ehtesham-11482021b' },
                             ].map(c => (
                                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer"
                                     className="module-tile flex items-center gap-3 no-underline group">
