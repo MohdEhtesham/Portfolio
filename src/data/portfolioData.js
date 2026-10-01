@@ -233,7 +233,7 @@ export const projects = [
 
 export const education = {
     degree: "Bachelor of Technology (B.Tech)",
-    field: "Computer Science & Engineering",
+    field: "Electronics & Communication Engineering",
     college: "KIPM College of Engineering and Technology",
     university: "Dr. APJ Abdul Kalam Technical University (AKTU)",
     location: "Gorakhpur, India",
