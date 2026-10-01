@@ -1,21 +1,13 @@
-import { skills } from '../data/portfolioData';
+import { skillGroups, skills } from '../data/portfolioData';
 
-const categoryMeta = {
-    core: { label: 'CORE TECHNOLOGIES', color: '#22C55E' },
-    state: { label: 'STATE MANAGEMENT', color: '#4ADE80' },
-    backend: { label: 'BACKEND & APIS', color: '#86EFAC' },
-    web: { label: 'WEB TECHNOLOGIES', color: '#22C55E' },
-    integrations: { label: 'INTEGRATIONS & SDKs', color: '#4ADE80' },
-    tools: { label: 'TOOLS & DEVOPS', color: '#86EFAC' },
-};
+const palette = ['#22C55E', '#4ADE80', '#86EFAC'];
+
+// Day-to-day core stack, shown emphasised
+const coreSkills = new Set([
+    'React Native (CLI)', 'JavaScript (ES6+)', 'TypeScript', 'Redux', 'Redux Toolkit', 'REST APIs',
+]);
 
 export default function SkillsPage() {
-    const grouped = {};
-    skills.forEach(s => {
-        if (!grouped[s.category]) grouped[s.category] = [];
-        grouped[s.category].push(s);
-    });
-
     return (
         <div className="fade-up">
             <div className="page-header">
@@ -27,55 +19,46 @@ export default function SkillsPage() {
                     Technical <span className="gradient-text">Arsenal</span>
                 </h2>
                 <p className="animate-boot boot-3">
-                    A matrix of engineering capabilities honed through years of production mobile development.
+                    The tools and practices behind production mobile apps — from React Native and Redux to
+                    native integrations, payments and CI/CD.
                 </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {Object.entries(grouped).map(([cat, catSkills], ci) => {
-                    const meta = categoryMeta[cat] || { label: cat.toUpperCase(), color: '#22C55E' };
+                {skillGroups.map((group, gi) => {
+                    const color = palette[gi % palette.length];
                     return (
-                        <div key={cat} className={`panel animate-boot boot-${ci + 2}`}>
+                        <div key={group.category} className={`panel animate-boot boot-${Math.min(gi + 2, 8)}`}>
                             <div className="panel-header">
                                 <div className="flex items-center gap-2">
-                                    <span className="w-1.5 h-6 rounded-full" style={{ background: meta.color, boxShadow: `0 0 6px ${meta.color}40` }} />
-                                    <span className="panel-title" style={{ color: meta.color }}>{meta.label}</span>
+                                    <span className="w-1.5 h-6 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}40` }} />
+                                    <h3 className="panel-title" style={{ color }}>{group.category}</h3>
                                 </div>
                                 <div className="panel-status">
                                     <span className="dot" />
-                                    <span>{catSkills.length} LOADED</span>
+                                    <span>{group.items.length} LOADED</span>
                                 </div>
                             </div>
-                            <div className="panel-body space-y-3">
-                                {catSkills.map(s => (
-                                    <div key={s.name} className="group">
-                                        <div className="flex items-center justify-between mb-1.5">
-                                            <span className="font-mono text-[11px] font-medium"
-                                                style={{ color: '#E6F4EA' }}>{s.name}</span>
-                                            <span className="font-mono text-[9px]" style={{ color: '#4A6B55' }}>{s.level}%</span>
-                                        </div>
-                                        <div className="h-[3px] rounded-full" style={{ background: 'rgba(34,197,94,0.06)' }}>
-                                            <div className="h-full rounded-full transition-all duration-1000 relative overflow-hidden"
-                                                style={{
-                                                    width: `${s.level}%`,
-                                                    background: `linear-gradient(90deg, ${meta.color}, ${meta.color}88)`,
-                                                    boxShadow: `0 0 6px ${meta.color}30`,
-                                                }}>
-                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
-                          -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="panel-body">
+                                <ul className="flex flex-wrap gap-2">
+                                    {group.items.map(item => {
+                                        const core = coreSkills.has(item);
+                                        return (
+                                            <li key={item} className="skill-chip"
+                                                style={core ? { color: '#E6F4EA', borderColor: 'rgba(34,197,94,0.30)', background: 'rgba(34,197,94,0.08)' } : undefined}>
+                                                {item}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
                             </div>
                         </div>
                     );
                 })}
             </div>
 
-            {/* Connection lines hint */}
-            <div className="mt-6 font-mono text-[9px] text-center animate-boot boot-8" style={{ color: '#2D4636' }}>
-                {'>'} {skills.length} capabilities loaded across {Object.keys(grouped).length} subsystems
+            <div className="mt-6 font-mono text-[11px] text-center animate-boot boot-8" style={{ color: '#6B8F79' }}>
+                {'>'} {skills.length} capabilities loaded across {skillGroups.length} subsystems
             </div>
         </div>
     );

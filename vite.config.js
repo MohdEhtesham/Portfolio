@@ -9,6 +9,8 @@ export default defineConfig({
     tailwindcss(),
   ],
   build: {
+    // three.js is lazy-loaded after first paint, so its large chunk doesn't block the page
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       input: './index.html',
     },

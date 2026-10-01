@@ -89,11 +89,11 @@ export default function SystemCore({ name, role }) {
             </div>
 
             {/* Identity overlay */}
-            <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-                <h1 className="font-display text-2xl sm:text-3xl font-bold gradient-text leading-tight">
+            <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none" aria-hidden="true">
+                <div className="font-display text-2xl sm:text-3xl font-bold gradient-text leading-tight">
                     {name}
-                </h1>
-                <p className="font-mono text-[10px] tracking-[3px] uppercase mt-1"
+                </div>
+                <p className="font-mono text-[11px] tracking-[3px] uppercase mt-1"
                     style={{ color: '#4ADE80' }}>
                     {role}
                 </p>

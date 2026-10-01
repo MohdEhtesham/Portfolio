@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+/* Pass `fallback` to render something in place of a failed subtree (e.g. a 3D
+   canvas on a device without WebGL) instead of the full-page error screen. */
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -12,32 +14,12 @@ export default class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
-
-    // #region agent log
-    fetch('http://127.0.0.1:7719/ingest/b7b45269-dba7-47c4-826d-3840bf0e348e', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Debug-Session-Id': 'c93068',
-      },
-      body: JSON.stringify({
-        sessionId: 'c93068',
-        runId: 'initial',
-        hypothesisId: 'H3',
-        location: 'src/components/ErrorBoundary.jsx:18',
-        message: 'ErrorBoundary caught error',
-        data: {
-          message: error?.message,
-          name: error?.name,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
   }
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback !== undefined) return this.props.fallback;
+
       return (
         <div style={{
           display: 'flex',
@@ -51,7 +33,7 @@ export default class ErrorBoundary extends Component {
           gap: '20px',
           padding: '20px'
         }}>
-          <div style={{ fontSize: '18px', color: '#22C55E' }}>ERROR: Application Failed to Load</div>
+          <div style={{ fontSize: '18px', color: '#22C55E' }}>Something went wrong loading this page.</div>
           <pre style={{
             background: 'rgba(34, 197, 94, 0.08)',
             padding: '16px',

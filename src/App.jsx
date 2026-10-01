@@ -1,11 +1,11 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { experience, projects, skills } from './data/portfolioData';
 
 /* Layout components */
 import InterfaceFrame from './components/InterfaceFrame';
 import SideIndicator from './components/SideIndicator';
 import StatusStrip from './components/StatusStrip';
-import NetworkBackground from './components/NetworkBackground';
 import ErrorBoundary from './components/ErrorBoundary';
 
 /* Pages */
@@ -16,41 +16,58 @@ import ProjectsPage from './pages/ProjectsPage';
 import ExperiencePage from './pages/ExperiencePage';
 import ArchitecturePage from './pages/ArchitecturePage';
 import ContactPage from './pages/ContactPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+/* three.js is heavy — load the background after first paint */
+const NetworkBackground = lazy(() => import('./components/NetworkBackground'));
+
+const BOOT_KEY = 'ehtesham-sys-booted';
+
+function shouldShowBoot() {
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    return sessionStorage.getItem(BOOT_KEY) !== '1';
+  } catch {
+    return true;
+  }
+}
 
 /* ========================================
-   BOOT SEQUENCE
+   BOOT SEQUENCE (once per visit, click/key to skip)
    ======================================== */
-function BootSequence({ onComplete }) {
-  const [lines, setLines] = useState([]);
-  const [progress, setProgress] = useState(0);
+const bootLines = [
+  { text: 'INITIALIZING SYSTEM CORE...', delay: 0 },
+  { text: 'Loading identity module', delay: 140 },
+  { text: `Mounting capability matrix [${skills.length} modules]`, delay: 270 },
+  { text: `Deploying project nodes [${projects.length} systems]`, delay: 390 },
+  { text: `Streaming experience logs [${experience.length} entries]`, delay: 500 },
+  { text: 'Building architecture map', delay: 600 },
+  { text: 'Opening signal channel', delay: 690 },
+  { text: 'All subsystems: ONLINE', delay: 790 },
+  { text: '', delay: 860 },
+  { text: '▶ SYSTEM READY — NAVIGATE MODULES', delay: 920 },
+];
+const BOOT_DURATION = 1400;
 
-  const bootLines = [
-    { text: 'INITIALIZING SYSTEM CORE...', delay: 0 },
-    { text: 'Loading identity module', delay: 180 },
-    { text: 'Mounting capability matrix [18 modules]', delay: 340 },
-    { text: 'Deploying project nodes [8 systems]', delay: 480 },
-    { text: 'Streaming experience logs [2 entries]', delay: 600 },
-    { text: 'Building architecture map', delay: 710 },
-    { text: 'Opening signal channel', delay: 810 },
-    { text: 'Network background: ACTIVE', delay: 900 },
-    { text: 'All subsystems: ONLINE', delay: 1020 },
-    { text: '', delay: 1100 },
-    { text: '▶ SYSTEM READY — NAVIGATE MODULES', delay: 1180 },
-  ];
+function BootSequence({ onComplete }) {
+  const [shown, setShown] = useState(0);
 
   useEffect(() => {
-    bootLines.forEach((line, i) => {
-      setTimeout(() => {
-        setLines(prev => [...prev, line.text]);
-        setProgress(((i + 1) / bootLines.length) * 100);
-      }, line.delay);
-    });
-    setTimeout(onComplete, 1800);
-  }, []);
+    const timers = bootLines.map((line, i) => setTimeout(() => setShown(i + 1), line.delay));
+    timers.push(setTimeout(onComplete, BOOT_DURATION));
+    const skip = () => onComplete();
+    window.addEventListener('keydown', skip);
+    return () => {
+      timers.forEach(clearTimeout);
+      window.removeEventListener('keydown', skip);
+    };
+  }, [onComplete]);
+
+  const progress = (shown / bootLines.length) * 100;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center circuit-bg"
-      style={{ background: '#060D09' }}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center circuit-bg cursor-pointer"
+      style={{ background: '#060D09' }} onClick={onComplete} role="presentation">
       <div className="w-full max-w-md px-8">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-lg flex items-center justify-center"
@@ -59,17 +76,17 @@ function BootSequence({ onComplete }) {
           </div>
           <div>
             <span className="font-display font-bold text-sm block" style={{ color: '#E6F4EA' }}>EHTESHAM.SYS</span>
-            <span className="font-mono text-[9px]" style={{ color: '#4A6B55' }}>v3.5.0 // MULTI-MODULE BOOT</span>
+            <span className="font-mono text-[10px]" style={{ color: '#6B8F79' }}>v4.0.0 // MULTI-MODULE BOOT</span>
           </div>
         </div>
 
-        <div className="font-mono text-[10px] space-y-1 mb-6" style={{ minHeight: '170px' }}>
-          {lines.map((line, i) => (
+        <div className="font-mono text-[11px] space-y-1 mb-6" style={{ minHeight: '170px' }}>
+          {bootLines.slice(0, shown).map(({ text }, i) => (
             <div key={i} className="flex items-center gap-2">
-              {line.startsWith('▶') ? (
-                <span style={{ color: '#22C55E' }}>{line}</span>
-              ) : line ? (
-                <><span style={{ color: '#22C55E' }}>{'>'}</span><span style={{ color: '#8FB89E' }}>{line}</span></>
+              {text.startsWith('▶') ? (
+                <span style={{ color: '#22C55E' }}>{text}</span>
+              ) : text ? (
+                <><span style={{ color: '#22C55E' }}>{'>'}</span><span style={{ color: '#8FB89E' }}>{text}</span></>
               ) : null}
             </div>
           ))}
@@ -85,6 +102,9 @@ function BootSequence({ onComplete }) {
               boxShadow: '0 0 8px rgba(34,197,94,0.35)',
             }} />
         </div>
+        <p className="font-mono text-[10px] mt-4 text-center" style={{ color: '#4A6B55' }}>
+          Click or press any key to skip
+        </p>
       </div>
     </div>
   );
@@ -103,14 +123,14 @@ function ScrollToTop() {
    APP SHELL — LAYOUT WITH ROUTER
    ======================================== */
 function AppShell() {
-  console.log('AppShell mounted');
-  
   return (
-    <div className="app-shell circuit-bg" style={{ background: '#060D09', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="app-shell circuit-bg" style={{ background: '#060D09' }}>
       {/* Background */}
-      <Suspense fallback={<div>Loading background...</div>}>
-        <NetworkBackground />
-      </Suspense>
+      <ErrorBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <NetworkBackground />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* Scan line */}
       <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
@@ -119,146 +139,50 @@ function AppShell() {
       </div>
 
       {/* Top bar */}
-      <Suspense fallback={<div>Loading navbar...</div>}>
-        <InterfaceFrame />
-      </Suspense>
+      <InterfaceFrame />
 
       {/* Main area */}
-      <div className="app-main" style={{ flex: 1, display: 'flex' }}>
-        <Suspense fallback={<div>Loading sidebar...</div>}>
-          <SideIndicator />
-        </Suspense>
-        
-        <div className="page-content" style={{ flex: 1, padding: '24px 32px 32px', position: 'relative', zIndex: 10 }}>
+      <div className="app-main">
+        <SideIndicator />
+
+        <main className="page-content">
           <ScrollToTop />
-          <Suspense fallback={<div style={{ color: '#22C55E' }}>Loading page...</div>}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/skills" element={<SkillsPage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/experience" element={<ExperiencePage />} />
-              <Route path="/architecture" element={<ArchitecturePage />} />
-              <Route path="/contact" element={<ContactPage />} />
-            </Routes>
-          </Suspense>
-        </div>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/architecture" element={<ArchitecturePage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
       </div>
 
       {/* Status footer */}
-      <Suspense fallback={<div>Loading footer...</div>}>
-        <StatusStrip />
-      </Suspense>
+      <StatusStrip />
     </div>
   );
 }
 
-/* ========================================
-   SIMPLIFIED APP — TESTING VERSION
-   ======================================== */
 export default function App() {
-  const [booting, setBooting] = useState(true);
-  const [error, setError] = useState(null);
+  const [booting, setBooting] = useState(shouldShowBoot);
 
-  useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7719/ingest/b7b45269-dba7-47c4-826d-3840bf0e348e', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Debug-Session-Id': 'c93068',
-      },
-      body: JSON.stringify({
-        sessionId: 'c93068',
-        runId: 'initial',
-        hypothesisId: 'H2',
-        location: 'src/App.jsx:163',
-        message: 'App useEffect start',
-        data: {
-          initialBooting: true,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-
-    try {
-      console.log('✅ App initialized');
-      setTimeout(() => {
-        console.log('✅ Boot sequence complete');
-        setBooting(false);
-
-        // #region agent log
-        fetch('http://127.0.0.1:7719/ingest/b7b45269-dba7-47c4-826d-3840bf0e348e', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Debug-Session-Id': 'c93068',
-          },
-          body: JSON.stringify({
-            sessionId: 'c93068',
-            runId: 'initial',
-            hypothesisId: 'H2',
-            location: 'src/App.jsx:171',
-            message: 'Boot sequence complete, booting=false',
-            data: {},
-            timestamp: Date.now(),
-          }),
-        }).catch(() => {});
-        // #endregion
-      }, 1800);
-    } catch (err) {
-      console.error('❌ Error:', err);
-      setError(err.message);
-    }
-  }, []);
-
-  if (error) {
-    return (
-      <div style={{
-        width: '100%',
-        height: '100vh',
-        background: '#060D09',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#FF6B6B',
-        fontFamily: 'monospace',
-        fontSize: '14px',
-        padding: '40px'
-      }}>
-        <div>
-          <h1>ERROR</h1>
-          <pre>{error}</pre>
-        </div>
-      </div>
-    );
-  }
+  const finishBoot = () => {
+    try { sessionStorage.setItem(BOOT_KEY, '1'); } catch { /* storage blocked */ }
+    setBooting(false);
+  };
 
   if (booting) {
-    return <BootSequence onComplete={() => setBooting(false)} />;
+    return <BootSequence onComplete={finishBoot} />;
   }
 
   return (
     <ErrorBoundary>
-      <BrowserRouter basename="/Portfolio/">
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <AppShell />
       </BrowserRouter>
-      <div style={{
-        position: 'fixed',
-        bottom: '10px',
-        right: '10px',
-        fontSize: '12px',
-        color: '#22C55E',
-        background: 'rgba(0,0,0,0.9)',
-        padding: '10px 15px',
-        fontFamily: 'monospace',
-        zIndex: 99999,
-        borderRadius: '4px',
-        border: '1px solid rgba(34,197,94,0.3)'
-      }}>
-        ✅ App loaded
-      </div>
     </ErrorBoundary>
   );
 }

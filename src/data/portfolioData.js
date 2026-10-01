@@ -1,179 +1,243 @@
 // =============================================
 // PORTFOLIO DATA — MOHD EHTESHAM
+// Source of truth: public/Mohd_Ehtesham_Resume.pdf
 // =============================================
 
 export const personalInfo = {
     name: "Mohd Ehtesham",
     role: "React Native Developer",
     tagline: "Mobile Application Engineer",
+    headline:
+        "React Native specialist with {EXP_YEARS} years building production-grade Android & iOS apps. Currently building the Motion Learning App at Motion Education.",
     summary:
-        "React Native developer with {EXP_YEARS} years of expertise in architecting and delivering high-performance mobile applications. Strong ownership of end-to-end mobile lifecycle — from architecture design, third-party integrations, and performance optimization to deployment and scalable mobile systems.",
-    location: "Noida, India",
+        "I'm a React Native specialist with {EXP_YEARS} years of experience building production-grade cross-platform mobile apps for Android and iOS, with a strong ed-tech background. I'm currently at Motion Education, building the Motion Learning App for JEE, NEET and CUET aspirants.",
+    expertise:
+        "My core stack is React Native CLI, JavaScript/TypeScript, Redux, REST APIs and Firebase, along with video learning, in-app payments, BLE and Maps. I own features end to end — from technical design and performance tuning to production debugging and Play Store / App Store releases.",
+    current: {
+        role: "React Native Developer",
+        company: "Motion Education Pvt. Ltd.",
+        product: "Motion Learning App",
+        since: "Jul 2026",
+    },
+    studentsServed: "10L+", // students reached by the Buddy4Study apps
+    location: "Bengaluru, India",
     email: "ehteshamidrishi@gmail.com",
+    phone: "+91 6306640599",
     github: "https://github.com/MohdEhtesham",
     linkedin: "https://www.linkedin.com/in/mohd-ehtesham-11482021b/",
-    resumeUrl: "#",
+    resumeUrl: `${import.meta.env.BASE_URL}Mohd_Ehtesham_Resume.pdf`,
 };
 
-export const skills = [
-    { name: "React Native", level: 95, category: "core" },
-    { name: "JavaScript ES6+", level: 92, category: "core" },
-    { name: "TypeScript", level: 80, category: "core" },
-    { name: "Redux", level: 90, category: "state" },
-    { name: "Context API", level: 88, category: "state" },
-    { name: "Firebase", level: 85, category: "backend" },
-    { name: "REST APIs", level: 92, category: "backend" },
-    { name: "HTML5", level: 90, category: "web" },
-    { name: "CSS3", level: 88, category: "web" },
-    { name: "Git", level: 85, category: "tools" },
-    { name: "Stripe", level: 78, category: "integrations" },
-    { name: "FCM", level: 82, category: "integrations" },
-    { name: "BLE", level: 75, category: "integrations" },
-    { name: "Maps SDK", level: 80, category: "integrations" },
-    { name: "Video SDKs", level: 78, category: "integrations" },
-    { name: "Analytics", level: 80, category: "integrations" },
-    { name: "Performance Opt.", level: 88, category: "core" },
-    { name: "React", level: 85, category: "web" },
+export const skillGroups = [
+    { category: "Languages", items: ["JavaScript (ES6+)", "TypeScript"] },
+    { category: "Mobile", items: ["React Native (CLI)", "Android", "iOS", "Cross-Platform Development", "Flutter"] },
+    { category: "Frameworks & Libraries", items: ["React", "React Hooks", "React Navigation", "Axios"] },
+    { category: "State Management", items: ["Redux", "Redux Toolkit", "Context API", "AsyncStorage"] },
+    {
+        category: "Backend & APIs",
+        items: ["REST APIs", "JSON", "JWT Auth", "Refresh Tokens", "Pagination", "Centralized Error Handling"],
+    },
+    { category: "Firebase", items: ["Authentication", "Firestore", "Cloud Messaging (FCM)", "Crashlytics"] },
+    { category: "Media & Learning", items: ["Video Lectures", "Live Classes", "In-App Test Engines"] },
+    {
+        category: "Native Integrations",
+        items: ["BLE", "Push Notifications", "Deep Linking", "Geolocation", "Camera"],
+    },
+    {
+        category: "Maps & Payments",
+        items: ["Google Maps SDK", "HERE Maps", "Stripe (Payment Intent)", "In-App Purchases"],
+    },
+    {
+        category: "Build & CI/CD",
+        items: [
+            "Xcode", "Android Studio", "CocoaPods", "Gradle", "Fastlane",
+            "GitHub Actions", "Bitrise", "App Center", "Play Store", "App Store",
+        ],
+    },
+    {
+        category: "Practices",
+        items: ["Agile / Scrum", "Code Reviews", "Mobile Architecture", "Performance Optimization"],
+    },
 ];
+
+export const skills = skillGroups.flatMap(g => g.items.map(name => ({ name, category: g.category })));
 
 // Green palette — different shades so nodes read distinct in 3D sphere
 export const techStackIcons = [
     { name: "React Native", icon: "⚛️", color: "#22C55E" },
     { name: "JavaScript", icon: "JS", color: "#86EFAC" },
+    { name: "TypeScript", icon: "TS", color: "#86EFAC" },
     { name: "Redux", icon: "🔄", color: "#4ADE80" },
     { name: "Firebase", icon: "🔥", color: "#16A34A" },
-    { name: "Git", icon: "📦", color: "#86EFAC" },
     { name: "REST APIs", icon: "🔗", color: "#22C55E" },
     { name: "Stripe", icon: "💳", color: "#4ADE80" },
-    { name: "TypeScript", icon: "TS", color: "#86EFAC" },
-    { name: "HTML5", icon: "🌐", color: "#22C55E" },
-    { name: "CSS3", icon: "🎨", color: "#4ADE80" },
     { name: "Maps", icon: "🗺️", color: "#16A34A" },
     { name: "BLE", icon: "📡", color: "#86EFAC" },
+    { name: "Fastlane", icon: "🚀", color: "#22C55E" },
 ];
 
 export const experience = [
     {
         id: 1,
         role: "React Native Developer",
-        company: "Buddy4Study",
-        period: "2024 — Present",
-        location: "Noida, India",
+        company: "Motion Education Pvt. Ltd.",
+        period: "Jul 2026 — Present",
+        location: "Bengaluru, India",
+        current: true,
         description:
-            "Leading mobile application development for India's largest scholarship platform. Building and optimizing high-traffic React Native apps serving millions of students.",
+            "Develop and maintain the Motion Learning App (Android & iOS) — Motion's exam-prep platform for IIT-JEE Main & Advanced, NEET-UG, CUET-UG, Olympiads, Boards and Class 6–10 Foundation.",
         highlights: [
-            "Architected and shipped production-grade scholarship discovery app",
-            "Built real-time video interaction module for student-counselor sessions",
-            "Optimized app performance with 40% reduction in bundle size",
-            "Integrated FCM, analytics, and deep linking for 2M+ users",
+            "Build the AI Homework System flow that generates personalized practice sheets from each student's test performance and highlights weak topics.",
+            "Develop the test engine for mock tests, DPPs, PYQs and the question bank, with real-time performance reports, test analysis, peer comparison and All-India ranking.",
+            "Integrate scan-to-solve doubt solving: students scan a question with the camera and get instant video or text solutions.",
+            "Implement video learning: live classes and recorded lectures from Motion faculty, with optimized streaming for smooth, buffer-free playback.",
+            "Build course and study-package purchases, free trial classes, Refer & Earn rewards and location-based package offers.",
+            "Improve app stability and performance under high concurrent load; work with product, academic and backend teams in Agile sprints and ship regular Play Store / App Store releases.",
         ],
-        tech: ["React Native", "Redux", "Firebase", "Video SDK", "FCM"],
+        tech: ["React Native", "Android", "iOS", "Video Streaming", "Camera", "Agile"],
     },
     {
         id: 2,
-        role: "Associate Software Engineer",
-        company: "OTS Solutions",
-        period: "2022 — 2024",
+        role: "React Native Developer",
+        company: "Buddy4Study",
+        period: "Sep 2024 — Jun 2026",
         location: "Noida, India",
         description:
-            "Full-cycle mobile development across multiple client projects spanning healthcare, travel, and productivity domains.",
+            "Architected and shipped React Native apps serving 10 lakh+ students for scholarship discovery, applications and document submissions.",
         highlights: [
-            "Delivered 6+ production mobile applications from scratch",
-            "Implemented Stripe payment gateway integration for e-commerce apps",
-            "Built BLE-based IoT communication layer for health monitoring app",
-            "Integrated Maps SDK with custom markers and geofencing",
+            "Owned REST API integration with secure auth, token refresh, pagination and centralized error handling, reducing failed requests.",
+            "Implemented FCM push notifications across foreground, background and terminated states, driving engagement and retention.",
+            "Designed a scalable Redux architecture for async workflows, complex data flows and offline-friendly UX.",
+            "Led real-time video interaction features: session scheduling, in-app notifications and event-driven triggers.",
+            "Reduced list scroll lag via FlatList virtualization, memoization and efficient re-render patterns.",
         ],
-        tech: ["React Native", "JavaScript", "Stripe", "BLE", "Maps", "REST APIs"],
+        tech: ["React Native", "Redux", "REST APIs", "JWT Auth", "FCM", "Firebase"],
+    },
+    {
+        id: 3,
+        role: "Associate Software Engineer (React Native)",
+        company: "OTS Solutions Pvt. Ltd.",
+        period: "Sep 2022 — Aug 2024",
+        location: "Gurugram, India",
+        description:
+            "Delivered cross-platform apps across fintech, healthcare, IoT and event management, from design to production.",
+        highlights: [
+            "Integrated Stripe using Payment Intent architecture for PCI-compliant payments and subscriptions.",
+            "Built BLE modules for device pairing, encrypted communication and real-time data exchange with IoT hardware.",
+            "Configured Firebase Auth, Firestore, push notifications and Crashlytics for monitoring and proactive issue resolution.",
+            "Built reusable UI component libraries and navigation structures, speeding delivery across client projects.",
+            "Managed end-to-end Play Store and App Store releases; mentored junior developers through code reviews and pair programming.",
+        ],
+        tech: ["React Native", "Stripe", "BLE", "Firebase", "Crashlytics", "React Navigation"],
     },
 ];
 
 export const projects = [
     {
         id: 1,
-        title: "Buddy4Study Scholarship App",
+        title: "Motion Learning App",
+        company: "Motion Education",
+        featured: true,
         description:
-            "India's leading scholarship discovery platform serving 2M+ students. End-to-end mobile application with advanced search, personalized recommendations, and application tracking.",
-        tech: ["React Native", "Redux", "Firebase", "FCM", "Analytics"],
+            "Exam-prep app for JEE, NEET, CUET, Olympiads and Boards — AI Homework System for personalized practice sheets, live and recorded lectures, mock tests, DPPs, PYQs, a question bank, scan-to-solve doubts and real-time performance reports with All-India ranking.",
+        tech: ["React Native", "Android", "iOS", "Video Streaming", "Camera"],
         category: "EdTech",
         color: "#22C55E",
-        features: ["Smart search", "Push notifications", "Deep linking", "Analytics"],
+        features: [
+            "AI Homework System", "Live & recorded lectures", "Mock tests, DPPs & PYQs",
+            "Scan-to-solve doubts", "All-India ranking", "Course purchases", "Refer & Earn",
+        ],
     },
     {
         id: 2,
-        title: "Buddy4Study Video App",
+        title: "Buddy4Study Scholarship Platform",
+        company: "Buddy4Study",
+        featured: true,
         description:
-            "Real-time video interaction platform for student-counselor sessions with live chat, screen sharing, and session recording capabilities.",
-        tech: ["React Native", "Video SDK", "WebRTC", "Firebase"],
-        category: "Video",
+            "Scholarship discovery and applications for 10 lakh+ students, with secure auth, REST APIs, document uploads and push notifications.",
+        tech: ["React Native", "Redux", "REST APIs", "FCM"],
+        category: "EdTech",
         color: "#4ADE80",
-        features: ["Live video", "Chat", "Screen share", "Recording"],
+        features: ["Scholarship discovery", "Secure auth", "Document uploads", "Push notifications"],
     },
     {
         id: 3,
-        title: "Rupa Rahul Bajaj Scholarship",
+        title: "Buddy4Study Video Interaction Platform",
+        company: "Buddy4Study",
         description:
-            "Dedicated scholarship application platform with document upload, eligibility checker, and application status tracking for prestigious Bajaj scholarship program.",
-        tech: ["React Native", "REST APIs", "Redux", "Firebase"],
-        category: "EdTech",
+            "Scheduled video sessions with Firebase notifications and real-time, event-driven triggers.",
+        tech: ["React Native", "Firebase", "FCM"],
+        category: "Video",
         color: "#86EFAC",
-        features: ["Doc upload", "Eligibility check", "Status tracking"],
+        features: ["Session scheduling", "In-app notifications", "Event-driven triggers"],
     },
     {
         id: 4,
-        title: "Transplant App",
+        title: "Rupa Rahul Bajaj Scholarship App",
         description:
-            "Healthcare application for organ transplant coordination with BLE device integration, real-time monitoring, and secure medical data handling.",
-        tech: ["React Native", "BLE", "REST APIs", "Maps"],
-        category: "Healthcare",
+            "Onboarding and application tracking with API-driven workflows and document management.",
+        tech: ["React Native", "REST APIs"],
+        category: "EdTech",
         color: "#16A34A",
-        features: ["BLE integration", "Real-time monitoring", "Secure data"],
+        features: ["Onboarding", "Application tracking", "Document management"],
     },
     {
         id: 5,
-        title: "Door2Door Flights",
+        title: "Door2Door Flights & Mobility",
         description:
-            "Travel booking application with flight search, booking management, Stripe-powered payments, and itinerary management.",
-        tech: ["React Native", "Stripe", "REST APIs", "Maps SDK"],
+            "Travel booking app built on HERE Maps — flight search, ride booking and real-time trip tracking.",
+        tech: ["React Native", "HERE Maps", "Geolocation"],
         category: "Travel",
         color: "#22C55E",
-        features: ["Flight search", "Payments", "Itinerary", "Maps"],
+        features: ["Flight search", "Ride booking", "Real-time trip tracking"],
     },
     {
         id: 6,
-        title: "Vow-Timer",
+        title: "Gun-Lox Smart Lock",
         description:
-            "Productivity and commitment tracking application with custom timers, goal setting, progress analytics, and reminder notifications.",
-        tech: ["React Native", "Redux", "Firebase", "FCM"],
-        category: "Productivity",
+            "IoT app using encrypted BLE for secure smart-lock control and access management.",
+        tech: ["React Native", "BLE", "Encryption"],
+        category: "IoT",
         color: "#4ADE80",
-        features: ["Custom timers", "Goals", "Analytics", "Notifications"],
+        features: ["Encrypted BLE", "Smart-lock control", "Access management"],
     },
     {
         id: 7,
-        title: "Penn-AI",
-        description:
-            "AI-powered mobile application integrating machine learning capabilities for intelligent content generation and user assistance.",
-        tech: ["React Native", "AI APIs", "REST APIs", "Redux"],
+        title: "Penn-AI Speech Recognition",
+        description: "Real-time speech-to-text transcription app.",
+        tech: ["React Native", "Speech-to-Text"],
         category: "AI",
         color: "#86EFAC",
-        features: ["AI integration", "Smart content", "ML-powered"],
+        features: ["Real-time transcription", "Speech recognition"],
     },
     {
         id: 8,
-        title: "Gun-Lox",
+        title: "Transplant Healthcare Platform",
         description:
-            "Security-focused application with advanced authentication, encrypted data storage, and real-time security monitoring features.",
-        tech: ["React Native", "Firebase", "REST APIs", "Analytics"],
-        category: "Security",
+            "Kidney and pancreas transplant workflow management for patients and clinicians.",
+        tech: ["React Native", "REST APIs"],
+        category: "Healthcare",
         color: "#16A34A",
-        features: ["Auth system", "Encryption", "Monitoring"],
+        features: ["Transplant workflows", "Patient & clinician views"],
+    },
+    {
+        id: 9,
+        title: "Vow-Timer Wedding Planner",
+        description: "Wedding planning app with countdowns, reminders, RSVP management and guest notifications.",
+        tech: ["React Native", "Push Notifications"],
+        category: "Events",
+        color: "#22C55E",
+        features: ["Countdowns", "Reminders", "RSVP management", "Guest notifications"],
     },
 ];
 
 export const education = {
-    degree: "B.Tech",
-    university: "AKTU University",
+    degree: "Bachelor of Technology (B.Tech)",
     field: "Computer Science & Engineering",
+    college: "KIPM College of Engineering and Technology",
+    university: "Dr. APJ Abdul Kalam Technical University (AKTU)",
+    location: "Gorakhpur, India",
+    period: "2018 — 2022",
 };
 
 export const navLinks = [

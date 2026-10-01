@@ -13,14 +13,14 @@ const pathLabels = {
 
 export default function StatusStrip() {
     const { pathname } = useLocation();
-    const label = pathLabels[pathname] || 'UNKNOWN';
+    const label = pathLabels[pathname.replace(/\/$/, '') || '/'] || 'NOT.FOUND';
 
     return (
-        <div className="status-strip">
+        <footer className="status-strip">
             <span>MODULE: {label}</span>
             <span className="hidden sm:inline">OPERATOR: {personalInfo.name.toUpperCase()}</span>
             <span className="hidden md:inline">LOCATION: {personalInfo.location.toUpperCase()}</span>
-            <span>© {new Date().getFullYear()} EHTESHAM.SYS</span>
-        </div>
+            <span>© {new Date().getFullYear()} {personalInfo.name.toUpperCase()}</span>
+        </footer>
     );
 }
